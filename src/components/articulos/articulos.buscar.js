@@ -1,148 +1,53 @@
 import React from "react";
-import { request } from "../helper/helper";
 import { Container, Row } from "react-bootstrap";
 import "./articulos.css";
-import BootstrapTable from "react-bootstrap-table-next";
-import paginationFactory, {
-  PaginationProvider,
-  PaginationListStandalone,
-  SizePerPageDropdownStandalone,
-} from "react-bootstrap-table2-paginator";
-import ToolkitProvider, {
-  Search,
-} from "react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit";
+import DataGrid from "../grid/grid";
 
-const { SearchBar } = Search;
-const products = [
-  {
-    id: 1,
-    name: "Teclado Gamer",
-    price: 150000,
-  },
-  {
-    id: 2,
-    name: "Teclado USB",
-    price: 30000,
-  },
-  {
-    id: 3,
-    name: "Teclado Inhalambrico",
-    price: 45000,
-  },
-  {
-    id: 4,
-    name: "Portatil Gamer Asus",
-    price: 35000000,
-  },
-  {
-    id: 5,
-    name: "Portatil Toshiba",
-    price: 2450000,
-  },
-  {
-    id: 6,
-    name: "Portatil Slim Lenovo",
-    price: 2800000,
-  },
-  {
-    id: 7,
-    name: "Proyector Samsung",
-    price: 1900000,
-  },
-  {
-    id: 8,
-    name: "Proyector Reviv",
-    price: 2450000,
-  },
-  {
-    id: 9,
-    name: "Pantalla 19 pulgadas",
-    price: 780000,
-  },
-  {
-    id: 10,
-    name: "Pantalla 32 pulgadas",
-    price: 1750000,
-  },
-  {
-    id: 11,
-    name: "Licencia Office 365",
-    price: 280000,
-  },
-];
 const columns = [
-  {
-    dataField: "id",
-    text: "Product ID",
-  },
-  {
-    dataField: "name",
-    text: "Product Name",
-  },
-  {
-    dataField: "price",
-    text: "Product Price",
-  },
+    {
+        dataField: "_id",
+        text: "ID",
+        hidden: true,
+    },
+    {
+        dataField: "nombre",
+        text: "Nombre",
+    },
+    {
+        dataField: "categoria",
+        text: "Categoría",
+    },
+    {
+        dataField: "tipo",
+        text: "Tipo",
+    },
+    {
+        dataField: "inventario",
+        text: " Inventario",
+    },
+    {
+        dataField: "novedad",
+        text: "Novedad",
+    },
 ];
 
 export default class ArticulosBuscar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-  componentDidMount() {
-    request
-      .get("/empleados")
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-  render() {
-    const options = {
-      custom: true,
-      totalSize: products.length,
-    };
-    return (
-      <Container id="articulo-buscar-container">
-        <Row>
-          <h1>Buscar Articulos</h1>
-        </Row>
-        <Row>
-          <ToolkitProvider
-            keyField="id"
-            data={products}
-            columns={columns}
-            search
-          >
-            {(props) => (
-              <>
-                <h3>Ingrese algunos datos para empezar la busqueda:</h3>
-                <SearchBar {...props.searchProps} />
-                <hr />
-                <PaginationProvider pagination={paginationFactory(options)}>
-                  {({ paginationProps, paginationTableProps }) => (
-                    <div>
-                      <SizePerPageDropdownStandalone {...paginationProps} />
-                      <BootstrapTable
-                        keyField="id"
-                        data={products}
-                        columns={columns}
-                        {...paginationTableProps}
-                        {...props.baseProps}
-                      />
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
+    componentDidMount() {}
 
-                      <PaginationListStandalone {...paginationProps} />
-                    </div>
-                  )}
-                </PaginationProvider>
-              </>
-            )}
-          </ToolkitProvider>
-        </Row>
-      </Container>
-    );
-  }
+    render() {
+        return (
+            <Container id="articulo-buscar-container">
+                <Row>
+                    <h1>Buscar Articulos</h1>
+                </Row>
+                <Row>
+                    <DataGrid url="/articulos" columns={columns} />
+                </Row>
+            </Container>
+        );
+    }
 }
